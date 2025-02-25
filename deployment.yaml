@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patient-service
+  labels:
+    app: patient-service
+spec:
+  selector:
+    matchLabels:
+      app: patient-service
+  replicas: 3
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: patient-service
+    spec: 
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: patient-service
+<<<<<<< HEAD
+        image: 600627363311.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest
+=======
+        image: gopidevopskanna/github_action_docker:latest
+>>>>>>> d998dc4feec3727144ea26f5b8dae2e00b8ea126
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
