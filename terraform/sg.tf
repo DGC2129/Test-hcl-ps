@@ -11,7 +11,7 @@ resource "aws_security_group" "allow_all_new" {
   name        = "${var.vpc_name}-Allow-All_new"
   description = "Allow all inbound traffic"
   vpc_id      = aws_vpc.default.id
-  
+
   dynamic "ingress" {
     for_each = local.inbound_ports
     content {
@@ -31,5 +31,5 @@ resource "aws_security_group" "allow_all_new" {
       cidr_blocks = ["${chomp(data.http.myip2.response_body)}/32"]
     }
   }
-}  
+}
 
