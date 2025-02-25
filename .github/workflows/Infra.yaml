@@ -106,4 +106,4 @@ jobs:
           password: ${{ secrets.TMP_PAT_TOKEN }}
 
       - name: "Terraform Apply"
-        run: terraform apply --var-file="dev.tfvars" -auto-approve tfplan
+        run: terraform apply --var-file="dev.tfvars" -auto-approve
