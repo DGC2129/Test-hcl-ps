@@ -62,20 +62,20 @@ jobs:
         run: |
           terraform plan --var-file="dev.tfvars"
 
-  approve:
-    name: "Manual Approval for Production"
-    if: inputs.environment == 'prod'  # Only require approval for production
-    needs: Terraform-Plan
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Wait for Manual Approval"
-        uses: hmarr/auto-approve-action@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+  # approve:
+  #   name: "Manual Approval for Production"
+  #   if: inputs.environment == 'prod'  # Only require approval for production
+  #   needs: Terraform-Plan
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: "Wait for Manual Approval"
+  #       uses: hmarr/auto-approve-action@v3
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
 
   apply:
     name: "Terraform Apply"
-    needs: [Terraform-plan, approve]
+    needs: Terraform-plan
     runs-on: ubuntu-latest
     defaults:
       run:
