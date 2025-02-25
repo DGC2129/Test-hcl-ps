@@ -61,44 +61,38 @@ on:
 
 jobs:
   destroy:
+    name: "Terraform Destroy"
+    needs: Terraform-plan
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.confirm == 'DESTROY' }}  # ✅ Ensures intentional destruction
-    permissions:
-      id-token: write
-      contents: read
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
 
     steps:
-      - name: Checkout repository
+      - name: "Checkout Repository"
         uses: actions/checkout@v3
 
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
+
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      # - name: Destroy ECS Service (if exists)
-      #   run: |
-      #     CLUSTER_NAME="my-cluster-${{ github.event.inputs.environment }}"
-      #     SERVICE_NAME="my-service-${{ github.event.inputs.environment }}"
+      - name: Log into GH registry
+        uses: actions/checkout@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.TMP_PAT_TOKEN }}
 
-      #     aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --desired-count 0 || true
-      #     aws ecs delete-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force || true
-
-      # - name: Destroy Load Balancer
-      #   run: |
-      #     ALB_NAME="my-alb-${{ github.event.inputs.environment }}"
-      #     LB_ARN=$(aws elbv2 describe-load-balancers --names $ALB_NAME --query 'LoadBalancers[0].LoadBalancerArn' --output text || echo "")
-      #     if [ -n "$LB_ARN" ]; then
-      #       aws elbv2 delete-load-balancer --load-balancer-arn $LB_ARN
-      #     fi
-
-      # - name: Destroy ECR Repository (Optional)
-      #   run: |
-      #     REPO_NAME="my-ecr-repo-${{ github.event.inputs.environment }}"
-      #     aws ecr delete-repository --repository-name $REPO_NAME --force || true
-
-      - name: Terraform Destroy (If Using Terraform)
+      - name: "Terraform Apply"
         run: |
-          terraform destroy -auto-approve
+          terraform init
+          terraform destroy --var-file="dev.tfvars" -auto-approve
