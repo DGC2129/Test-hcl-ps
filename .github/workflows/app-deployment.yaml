@@ -1,13 +1,15 @@
-name: CI/CD for Patient Service
+name: ECS/EKS Image Deployment
 
 on:
   push:
     branches:
       - main
       - DGC2129-patch-1 
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 env:
   ECR_REPOSITORY: patient-service
@@ -87,5 +89,6 @@ jobs:
           REPO_URL: https://github.com/Patient-Service
         run: |
           kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
           kubectl set image deployment/$K8S_DEPLOYMENT patient-service=github_action_docker:latest -n $K8S_NAMESPACE
           kubectl rollout status deployment/$K8S_DEPLOYMENT -n $K8S_NAMESPACE

@@ -1,0 +1,105 @@
+# name: Destroy AWS Resources
+
+# on:
+#   workflow_run:
+#     workflows: ["ECS/EKS Image Deployment"]  # 🔹 Name of the ECS deployment workflow
+#     types:
+#       - completed  # Runs after ECS/EKS Image Deployment
+
+# jobs:
+#   destroy:
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.workflow_run.conclusion == 'success' }}  # ✅ Only run if deployment was successful
+#     permissions:
+#       id-token: write
+#       contents: read
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           aws-region: us-east-1
+
+#       # - name: Destroy ECS Service (if exists)
+#       #   run: |
+#       #     aws ecs update-service --cluster my-cluster --service my-service --desired-count 0
+#       #     aws ecs delete-service --cluster my-cluster --service my-service --force || true
+
+#       # - name: Destroy Load Balancer
+#       #   run: |
+#       #     LB_ARN=$(aws elbv2 describe-load-balancers --names my-alb --query 'LoadBalancers[0].LoadBalancerArn' --output text || echo "")
+#       #     if [ -n "$LB_ARN" ]; then
+#       #       aws elbv2 delete-load-balancer --load-balancer-arn $LB_ARN
+#       #     fi
+
+#       # - name: Destroy ECR Repository (Optional)
+#       #   run: |
+#       #     aws ecr delete-repository --repository-name my-ecr-repo --force || true
+
+#       - name: Terraform Destroy (If Using Terraform)
+#         run: |
+#           terraform init
+#           terraform destroy -auto-approve
+
+
+name: Destroy AWS Resources
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Enter the environment to destroy (e.g., dev, staging, prod)"
+        required: true
+      confirm:
+        description: "Type 'DESTROY' to confirm"
+        required: true
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.confirm == 'DESTROY' }}  # ✅ Ensures intentional destruction
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # - name: Destroy ECS Service (if exists)
+      #   run: |
+      #     CLUSTER_NAME="my-cluster-${{ github.event.inputs.environment }}"
+      #     SERVICE_NAME="my-service-${{ github.event.inputs.environment }}"
+
+      #     aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --desired-count 0 || true
+      #     aws ecs delete-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force || true
+
+      # - name: Destroy Load Balancer
+      #   run: |
+      #     ALB_NAME="my-alb-${{ github.event.inputs.environment }}"
+      #     LB_ARN=$(aws elbv2 describe-load-balancers --names $ALB_NAME --query 'LoadBalancers[0].LoadBalancerArn' --output text || echo "")
+      #     if [ -n "$LB_ARN" ]; then
+      #       aws elbv2 delete-load-balancer --load-balancer-arn $LB_ARN
+      #     fi
+
+      # - name: Destroy ECR Repository (Optional)
+      #   run: |
+      #     REPO_NAME="my-ecr-repo-${{ github.event.inputs.environment }}"
+      #     aws ecr delete-repository --repository-name $REPO_NAME --force || true
+
+      - name: Terraform Destroy (If Using Terraform)
+        run: |
+          terraform init
+          terraform destroy -auto-approve
