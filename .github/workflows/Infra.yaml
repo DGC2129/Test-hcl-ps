@@ -14,13 +14,13 @@ on:
           - prod
 
 jobs:
-  terraform:
-    name: "Terraform Deployment"
+  Terraform-Plan:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     defaults:
       run:
-        shell: bash
-        working-directory: cd terraform
+        working-directory: ./terraform
+
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v3
@@ -29,6 +29,20 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.6.0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log into GH registry
+        uses: actions/checkout@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.TMP_PAT_TOKEN }}         
 
       - name: "Terraform Init"
         run: |
