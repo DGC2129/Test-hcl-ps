@@ -17,6 +17,10 @@ jobs:
   terraform:
     name: "Terraform Deployment"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: cd terraform
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v3
