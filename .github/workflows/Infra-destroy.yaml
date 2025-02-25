@@ -62,7 +62,6 @@ on:
 jobs:
   destroy:
     name: "Terraform Destroy"
-    needs: Terraform-plan
     runs-on: ubuntu-latest
     defaults:
       run:
