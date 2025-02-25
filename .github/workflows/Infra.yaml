@@ -46,7 +46,6 @@ jobs:
 
       - name: "Terraform Init"
         run: |
-          cd terraform
           terraform init
          # terraform workspace select ${{ inputs.environment }}
         
