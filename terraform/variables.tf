@@ -12,3 +12,13 @@ variable "outbound_ports" {}
 variable "appversion" {}
 variable "cluster_name" {}
 variable "kubernetes_version" {}
+variable "ecr_name" {}
+# variable "location" {}
+# variable "cluster_version" {}
+# variable "nodegroup_size" {}
+# variable "managed_worker_desired_size" {}
+# variable "nodegroup_name" {}
+# variable "eks_version" {}
+# variable "custom_role_arns" {
+#   type = list(string)
+# }

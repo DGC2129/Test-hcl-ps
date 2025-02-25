@@ -14,11 +14,17 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">=2.7.1"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.19.0"
+    }
   }
+
   backend "s3" {
-    bucket = "gopi-terraform-state"
-    key    = "gopi-terraform-state.tfstate"
-    region = "us-east-1"
+    bucket  = "gopi-terraform-state"
+    key     = "gopi-terraform-state.tfstate"
+    region  = "us-east-1"
+    encrypt = true
   }
   # null {
   #   source  = "hashicorp/null"

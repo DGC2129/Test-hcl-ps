@@ -29,6 +29,18 @@ output "region" {
   value       = var.aws_region
 }
 
-output "oidc_provider_arn" {
-  value = module.eks.oidc_provider_arn
+
+output "registry_id" {
+  description = "ECR registry ID"
+  value       = aws_ecr_repository.HCL-myecr.registry_id
+}
+
+output "registry_url" {
+  description = "ECR registry URL"
+  value       = aws_ecr_repository.HCL-myecr.repository_url
+}
+
+output "lb_dns_name" {
+  description = "The DNS name of the LB"
+  value       = aws_lb.LB.dns_name
 }

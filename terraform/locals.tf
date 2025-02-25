@@ -3,4 +3,9 @@ locals {
   public_subnet_cidrs  = distinct(var.public_subnet_cidrs)
   azs                  = distinct(var.azs)
   cluster_name         = "${var.vpc_name}-${var.environment}"
+  #   location              = var.location
+  #   eks_version           = var.cluster_version
+  #   node_size             = var.nodegroup_size
+  #   eks_master_subnet_ids = aws_subnet.private-subnets[*].id
+  #   eks_worker_subnet_ids = aws_subnet.private-subnets[*].id
 }

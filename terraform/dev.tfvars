@@ -22,3 +22,14 @@ outbound_ports       = ["80", "443", "443"]
 appversion           = "1.0.0"
 cluster_name         = "gopi-eks-cluster"
 kubernetes_version   = "1.21"
+ecr_name             = "gopi-ecr-repo"
+# location                    = "us-east-1"
+# cluster_version             = "1.21"
+# nodegroup_size              = "t3.medium"
+# managed_worker_desired_size = 2
+# nodegroup_name              = "gopi-eks-nodegroup"
+# eks_version                 = "1.21"
+# custom_role_arns = [
+#   "arn:aws:iam::600627363311:role/AWSReservedSSO_business_ContributorPrivate_7f81e35e5d944516",
+#   "arn:aws:iam::600627363311:role/AWSReservedSSO_business_ReadOnlyPrivate_b77eb6db62bcfc49"
+# ]
