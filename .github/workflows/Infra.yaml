@@ -28,21 +28,25 @@ jobs:
 
       - name: "Terraform Init"
         run: |
+          cd terraform
           terraform init
          # terraform workspace select ${{ inputs.environment }}
         
 
       - name: "Terraform Format Check"
         run: |
+          cd terraform
           terraform fmt -check=true
 
       - name: "Terraform Validate"
         run: |
+          cd terraform
           terraform validate
 
       - name: "Terraform Plan"
         run: |
-          terraform plan -out=tfplan
+          cd terraform
+          terraform plan --var-file="dev.tfvars"
 
   # approve:
   #   name: "Manual Approval for Production"
