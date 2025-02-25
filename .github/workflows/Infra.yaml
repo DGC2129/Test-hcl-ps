@@ -20,7 +20,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: envs/${{ inputs.environment }}
+        working-directory: terraform/${{ inputs.environment }}
 
     steps:
       - name: "Checkout Repository"
