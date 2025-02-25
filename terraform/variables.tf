@@ -9,3 +9,6 @@ variable "private_subnet_cidrs" {}
 variable "bucket_name" {}
 variable "inbound_ports" {}
 variable "outbound_ports" {}
+variable "appversion" {}
+variable "cluster_name" {}
+variable "kubernetes_version" {}

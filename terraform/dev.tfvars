@@ -20,3 +20,5 @@ private_subnet_cidrs = ["10.1.10.0/24", "10.1.20.0/24", "10.1.30.0/24"]
 inbound_ports        = ["22", "80", "443", "3389", "22"]
 outbound_ports       = ["80", "443", "443"]
 appversion           = "1.0.0"
+cluster_name         = "gopi-eks-cluster"
+kubernetes_version   = "1.21"

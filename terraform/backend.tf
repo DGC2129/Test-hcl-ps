@@ -6,8 +6,15 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">=2.7.1"
+    }
   }
-
   backend "s3" {
     bucket = "gopi-terraform-state"
     key    = "gopi-terraform-state.tfstate"
