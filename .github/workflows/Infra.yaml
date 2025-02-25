@@ -62,37 +62,48 @@ jobs:
         run: |
           terraform plan --var-file="dev.tfvars"
 
-  # approve:
-  #   name: "Manual Approval for Production"
-  #   if: inputs.environment == 'prod'  # Only require approval for production
-  #   needs: terraform
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: "Wait for Manual Approval"
-  #       uses: hmarr/auto-approve-action@v3
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  approve:
+    name: "Manual Approval for Production"
+    if: inputs.environment == 'prod'  # Only require approval for production
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Wait for Manual Approval"
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  # apply:
-  #   name: "Terraform Apply"
-  #   needs: [terraform, approve]
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #       working-directory: envs/${{ inputs.environment }}
+  apply:
+    name: "Terraform Apply"
+    needs: [Terraform-plan, approve]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
 
-  #   steps:
-  #     - name: "Checkout Repository"
-  #       uses: actions/checkout@v3
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v3
 
-  #     - name: "Setup Terraform"
-  #       uses: hashicorp/setup-terraform@v2
-  #       with:
-  #         terraform_version: 1.6.0
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
 
-  #     - name: "Terraform Apply"
-  #       run: terraform apply -auto-approve tfplan
-  #       env:
-  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log into GH registry
+        uses: actions/checkout@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.TMP_PAT_TOKEN }}
+
+      - name: "Terraform Apply"
+        run: terraform apply --var-file="dev.tfvars" -auto-approve tfplan
