@@ -65,7 +65,7 @@ jobs:
   approve:
     name: "Manual Approval for Production"
     if: inputs.environment == 'prod'  # Only require approval for production
-    needs: terraform
+    needs: Terraform-Plan
     runs-on: ubuntu-latest
     steps:
       - name: "Wait for Manual Approval"
