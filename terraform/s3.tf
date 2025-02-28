@@ -1,3 +1,3 @@
-resource "aws_s3_bucket" "gopi-terraform-state" {
-  bucket = "gopi-terraform-state"
-}
+# resource "aws_s3_bucket" "gopi-terraform-state" {
+#   bucket = "gopi-terraform-state"
+# }
