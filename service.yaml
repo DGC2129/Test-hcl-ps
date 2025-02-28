@@ -4,6 +4,8 @@ metadata:
   name: patient-service
   labels:
     app: patient-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb  
 spec:
   type: LoadBalancer
   selector:
