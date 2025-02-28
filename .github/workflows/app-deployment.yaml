@@ -86,7 +86,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         env:
-          REPO_URL: https://github.com/Patient-Service
+          REPO_URL: https://github.com/Test-hcl-ps
         run: |
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
