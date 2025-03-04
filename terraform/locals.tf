@@ -3,6 +3,7 @@ locals {
   public_subnet_cidrs  = distinct(var.public_subnet_cidrs)
   azs                  = distinct(var.azs)
   cluster_name         = "${var.vpc_name}-${var.environment}"
+  #eks_addons           = ["vpc-cni", "kube-proxy"]
   #   location              = var.location
   #   eks_version           = var.cluster_version
   #   node_size             = var.nodegroup_size

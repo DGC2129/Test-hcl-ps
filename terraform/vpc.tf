@@ -1,4 +1,3 @@
-# Using Data Source to get all Avalablility Zones in Region
 data "aws_availability_zones" "available_zones" {}
 
 resource "aws_vpc" "default" {
@@ -10,7 +9,6 @@ resource "aws_vpc" "default" {
     environment = var.environment
   }
 }
-
 
 resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id

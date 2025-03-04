@@ -8,7 +8,7 @@ resource "aws_ecs_task_definition" "TD" {
   container_definitions = jsonencode([
     {
       name      = "container"
-      image     = "gopidevopskanna/github_action_docker:v1"
+      image     = "600627363311.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest"
       cpu       = 1024
       memory    = 2048
       essential = true

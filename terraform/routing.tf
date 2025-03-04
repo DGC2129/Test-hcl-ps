@@ -17,7 +17,7 @@ resource "aws_route_table" "terraform-private" {
 }
 
 resource "aws_route_table_association" "public-subnet-assosiation" {
-  #count          = 3                                                     # 0 1 2
+  #count          = 3                                                    # 0 1 2
   count          = length(local.public_subnet_cidrs)                     # 0 1 2
   subnet_id      = element(aws_subnet.public-subnets[*].id, count.index) # splat operator
   route_table_id = aws_route_table.terraform-public.id

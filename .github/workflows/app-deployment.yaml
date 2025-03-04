@@ -84,6 +84,11 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode >> $HOME/.kube/config
           chmod 600 $HOME/.kube/config
 
+      # - name: Set up kubectl
+      #   run: |
+      #     aws eks update-kubeconfig --name my-eks-cluster --region $AWS_REGION
+      #     kubectl get nodes  # Verify authentication
+
       - name: Deploy to Kubernetes
         env:
           REPO_URL: https://github.com/Test-hcl-ps
