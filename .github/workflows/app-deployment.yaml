@@ -58,15 +58,21 @@ jobs:
 
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
       - name: docker build
         run: |
           docker build -t gopidevopskanna/github_action_docker:latest .
+          docker build -t my-ecr .
+          docker tag my-ecr:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+
 
       - name: docker Push
         run: |
-          docker push gopidevopskanna/github_action_docker:latest     
-
+          docker push gopidevopskanna/github_action_docker:latest   
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+           
 
   deploy:
     needs: docker-build-push
