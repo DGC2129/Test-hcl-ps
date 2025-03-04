@@ -1,4 +1,4 @@
-name: "Terraform Manual Deployment"
+name: "Infra Deployment"
 
 on:
   workflow_dispatch:  # Allows manual triggering from GitHub UI
