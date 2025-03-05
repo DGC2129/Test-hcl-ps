@@ -9,7 +9,12 @@
                 "autoscaling:DescribeLaunchConfigurations",
                 "autoscaling:SetDesiredCapacity",
                 "autoscaling:TerminateInstanceInAutoScalingGroup",
-                "ec2:DescribeLaunchTemplateVersions"
+                "ec2:DescribeLaunchTemplateVersions",
+                "ec2:DescribeInstance",
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeRegions",
+                "eks:DescribeCluster",
+                "eks:ListClusters"
             ],
             "Effect": "Allow",
             "Resource": "*"

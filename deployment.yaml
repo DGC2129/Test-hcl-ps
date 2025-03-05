@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: patient-service
-        image: gopidevopskanna/github_action_docker:latest
+        image: 600627363311.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

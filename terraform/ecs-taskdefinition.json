@@ -1,0 +1,12 @@
+// {
+//     "family": "nginx",
+//     "containerDefinitions": [
+//         {
+//             "name": "my-container",
+//             "image": "600627363311.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest",
+//             "memory": 512,
+//             "cpu": 256,
+//             "essential": true
+//         }
+//     ]
+// }

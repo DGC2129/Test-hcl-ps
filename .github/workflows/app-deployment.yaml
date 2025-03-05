@@ -13,6 +13,9 @@ on:
 
 env:
   ECR_REPOSITORY: myrepo
+  ECS_CLUSTER: terraform-hcl-vpc-dev
+  ECS_SERVICE: patient-service
+  EKS_CLUSTER: gopi-eks-cluster
   IMAGE_TAG: latest
   K8S_DEPLOYMENT: patient-service
   K8S_NAMESPACE: default
@@ -83,16 +86,21 @@ jobs:
       - name: Configure kubectl
         uses: azure/setup-kubectl@v3
 
+      - name: Update ECS Service
+        run: |
+          aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment  
+
+      # - name: Update EKS Deployment
+      #   run: |
+      #     aws eks update-kubeconfig --name $EKS_CLUSTER
+      #     kubectl set image deployment/$K8S_DEPLOYMENT patient-service=600627363311.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest -n $K8S_NAMESPACE
+      #     kubectl rollout status deployment/$K8S_DEPLOYMENT -n $K8S_NAMESPACE    
+
       - name: Set up Kubeconfig
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode >> $HOME/.kube/config
           chmod 600 $HOME/.kube/config
-
-      # - name: Set up kubectl
-      #   run: |
-      #     aws eks update-kubeconfig --name my-eks-cluster --region $AWS_REGION
-      #     kubectl get nodes  # Verify authentication
 
       - name: Deploy to Kubernetes
         env:
@@ -100,5 +108,3 @@ jobs:
         run: |
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
-#          kubectl set image deployment/$K8S_DEPLOYMENT patient-service=github_action_docker:latest -n $K8S_NAMESPACE
-#          kubectl rollout status deployment/$K8S_DEPLOYMENT -n $K8S_NAMESPACE

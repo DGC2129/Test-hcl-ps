@@ -84,12 +84,12 @@
 # Creating EKS Cluster
 resource "aws_eks_cluster" "HCl-Cluster" {
   name     = var.cluster_name
-  role_arn = var.master_arn
+  role_arn = aws_iam_role.master.arn
   version  = var.cluster_version
 
   vpc_config {
-    #subnet_ids = [var.public_subnet_az1_id, var.public_subnet_az2_id]
-    subnet_ids = aws_subnet.public-subnets[*].id
+    subnet_ids = [var.public_subnet_az1_id, var.public_subnet_az2_id]
+    #subnet_ids = aws_subnet.public-subnets.id
   }
 
   tags = {
@@ -141,9 +141,9 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 resource "aws_eks_node_group" "node-grp" {
   cluster_name    = aws_eks_cluster.HCl-Cluster.name
   node_group_name = "Worker-Node-Group"
-  node_role_arn   = var.worker_arn
-  #subnet_ids = [var.public_subnet_az1_id, var.public_subnet_az2_id]
-  subnet_ids = aws_subnet.public-subnets[*].id
+  node_role_arn   = aws_iam_role.worker.arn
+  subnet_ids = [var.public_subnet_az1_id, var.public_subnet_az2_id]
+  #subnet_ids = aws_subnet.public-subnets.id
 
   launch_template {
     name    = aws_launch_template.worker-node-launch-template.name
