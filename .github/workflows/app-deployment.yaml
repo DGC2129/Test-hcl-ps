@@ -88,6 +88,7 @@ jobs:
 
       - name: Update ECS Service
         run: |
+          aws configure
           aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment  
 
       # - name: Update EKS Deployment
