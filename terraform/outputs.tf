@@ -8,15 +8,15 @@ output "vpc_arn" {
   value       = aws_vpc.default.arn
 }
 
-output "aws_eks_cluster_name" {
-  description = "The name of the EKS cluster"
-  value       = aws_eks_cluster.HCl-Cluster.name
-}
+# output "aws_eks_cluster_name" {
+#   description = "The name of the EKS cluster"
+#   value       = aws_eks_cluster.HCl-Cluster.name
+# }
 
-output "aws_eks_cluster_id" {
-  description = "The ID of the EKS cluster"
-  value       = aws_eks_cluster.HCl-Cluster.id
-}
+# output "aws_eks_cluster_id" {
+#   description = "The ID of the EKS cluster"
+#   value       = aws_eks_cluster.HCl-Cluster.id
+# }
 
 
 # output "cluster_id" {

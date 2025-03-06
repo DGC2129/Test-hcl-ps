@@ -14,11 +14,11 @@ on:
 env:
   ECR_REPOSITORY: myrepo
   ECS_CLUSTER: terraform-hcl-vpc-dev
-  ECS_SERVICE: patient-service
-  EKS_CLUSTER: gopi-eks-cluster
+  ECS_SERVICE: my-service
+  #EKS_CLUSTER: gopi-eks-cluster
   IMAGE_TAG: latest
-  K8S_DEPLOYMENT: patient-service
-  K8S_NAMESPACE: default
+  #K8S_DEPLOYMENT: patient-service
+  #K8S_NAMESPACE: default
   AWS_REGION: us-east-1
 
 jobs:
