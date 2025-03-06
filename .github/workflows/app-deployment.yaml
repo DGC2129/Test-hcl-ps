@@ -104,15 +104,15 @@ jobs:
       #     kubectl set image deployment/$K8S_DEPLOYMENT patient-service=600627363311.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest -n $K8S_NAMESPACE
       #     kubectl rollout status deployment/$K8S_DEPLOYMENT -n $K8S_NAMESPACE    
 
-      - name: Set up Kubeconfig
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode >> $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
+      # - name: Set up Kubeconfig
+      #   run: |
+      #     mkdir -p $HOME/.kube
+      #     echo "${{ secrets.KUBECONFIG }}" | base64 --decode >> $HOME/.kube/config
+      #     chmod 600 $HOME/.kube/config
 
-      - name: Deploy to Kubernetes
-        env:
-          REPO_URL: https://github.com/Test-hcl-ps
-        run: |
-          kubectl apply -f deployment.yaml
-          kubectl apply -f service.yaml
+      # - name: Deploy to Kubernetes
+      #   env:
+      #     REPO_URL: https://github.com/Test-hcl-ps
+      #   run: |
+      #     kubectl apply -f deployment.yaml
+      #     kubectl apply -f service.yaml
